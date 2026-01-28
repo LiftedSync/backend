@@ -1,6 +1,6 @@
 # LiftedSync Backend
 
-WebSocket server for synchronized video playback across YouTube and Crunchyroll.
+WebSocket server for synchronized video playback across YouTube, Netflix, Amazon Prime and Crunchyroll.
 
 ## Overview
 
@@ -72,7 +72,7 @@ PORT=9090 java -jar build/libs/sync-backend-all.jar
 
 ### Server Details
 
-- **Production URL:** `wss://liftedgang.de/api/ws`
+- **Production URL:** `wss://liftedgang.de/api/ws`  (/api comes from Caddy reverse proxy)
 - **Server path:** `/opt/sync-backend`
 
 ### Docker Commands
