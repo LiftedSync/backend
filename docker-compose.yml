@@ -1,0 +1,42 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: liftedsync-backend
+    restart: unless-stopped
+    expose:
+      - "8080"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+    networks:
+      - liftedsync-network
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: liftedsync-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - /opt/page/dist:/opt/page/dist:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - liftedsync-network
+    depends_on:
+      - backend
+
+networks:
+  liftedsync-network:
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:
