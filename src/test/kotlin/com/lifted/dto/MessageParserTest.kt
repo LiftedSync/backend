@@ -68,6 +68,28 @@ class MessageParserTest {
     }
 
     @Test
+    fun `parse CreateRoomMessage with currentTime`() {
+        val json = """{"type":"create_room","userName":"Alice","platform":"youtube","currentTime":42.5}"""
+
+        val result = MessageParser.parseClientMessage(json)
+
+        assertIs<CreateRoomMessage>(result)
+        assertEquals("Alice", result.userName)
+        assertEquals(Platform.YOUTUBE, result.platform)
+        assertEquals(42.5, result.currentTime)
+    }
+
+    @Test
+    fun `parse CreateRoomMessage without currentTime defaults to zero`() {
+        val json = """{"type":"create_room","userName":"Alice","platform":"youtube"}"""
+
+        val result = MessageParser.parseClientMessage(json)
+
+        assertIs<CreateRoomMessage>(result)
+        assertEquals(0.0, result.currentTime)
+    }
+
+    @Test
     fun `parse invalid JSON returns null`() {
         val invalidJson = """not valid json at all"""
 

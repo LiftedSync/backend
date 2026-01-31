@@ -58,6 +58,31 @@ class RoomManagerTest {
     }
 
     @Test
+    fun `createRoom with currentTime sets it on the room`() {
+        val room = RoomManager.createRoom(
+            hostId = hostId,
+            hostName = "TestHost",
+            platform = Platform.YOUTUBE,
+            session = mockSession(),
+            currentTime = 99.5
+        )
+
+        assertEquals(99.5, room.currentTime)
+    }
+
+    @Test
+    fun `createRoom without currentTime defaults to zero`() {
+        val room = RoomManager.createRoom(
+            hostId = hostId,
+            hostName = "TestHost",
+            platform = Platform.YOUTUBE,
+            session = mockSession()
+        )
+
+        assertEquals(0.0, room.currentTime)
+    }
+
+    @Test
     fun `joinRoom returns room for valid ID`() {
         val createdRoom = RoomManager.createRoom(
             hostId = hostId,

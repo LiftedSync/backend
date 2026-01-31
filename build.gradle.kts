@@ -9,7 +9,7 @@ repositories {
 }
 
 group = "com.lifted"
-version = "0.2.0"
+version = "0.8.0"
 
 application {
     mainClass = "io.ktor.server.netty.EngineMain"

@@ -57,7 +57,7 @@ private suspend fun handleCreateRoom(
     session: WebSocketSession
 ) {
     logger.info("Creating room: userId=$userId, userName=${message.userName}, platform=${message.platform}")
-    val room = RoomManager.createRoom(userId, message.userName, message.platform, session)
+    val room = RoomManager.createRoom(userId, message.userName, message.platform, session, message.currentTime)
     logger.info("Room created: roomId=${room.id}, host=${message.userName}")
 
     val response = RoomCreatedMessage(roomId = room.id)

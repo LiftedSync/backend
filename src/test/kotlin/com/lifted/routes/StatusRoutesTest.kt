@@ -30,6 +30,6 @@ class StatusRoutesTest {
         val response = client.get("/version")
 
         assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals("0.2.0", response.bodyAsText())
+        assertEquals("0.8.0", response.bodyAsText())
     }
 }

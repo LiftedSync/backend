@@ -48,6 +48,40 @@ class RoomRoutesTest {
     }
 
     @Test
+    fun `create room with currentTime returns that time in room_joined`() = websocketTest { client ->
+        client.webSocket("/ws") {
+            val createMsg = """{"type":"create_room","userName":"Alice","platform":"youtube","currentTime":75.3}"""
+            send(Frame.Text(createMsg))
+
+            // room_created
+            incoming.receive()
+
+            // room_joined should have the specified currentTime
+            val frame = incoming.receive() as Frame.Text
+            val response = wsJson.decodeFromString<RoomJoinedMessage>(frame.readText())
+            assertEquals("room_joined", response.type)
+            assertEquals(75.3, response.currentTime)
+        }
+    }
+
+    @Test
+    fun `create room without currentTime defaults to zero in room_joined`() = websocketTest { client ->
+        client.webSocket("/ws") {
+            val createMsg = """{"type":"create_room","userName":"Alice","platform":"youtube"}"""
+            send(Frame.Text(createMsg))
+
+            // room_created
+            incoming.receive()
+
+            // room_joined should default to 0.0
+            val frame = incoming.receive() as Frame.Text
+            val response = wsJson.decodeFromString<RoomJoinedMessage>(frame.readText())
+            assertEquals("room_joined", response.type)
+            assertEquals(0.0, response.currentTime)
+        }
+    }
+
+    @Test
     fun `join room receives room state`() = websocketTest { client ->
         val roomIdDeferred = CompletableDeferred<String>()
 

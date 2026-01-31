@@ -21,7 +21,8 @@ data class JoinRoomMessage(
 data class CreateRoomMessage(
     val type: String = "create_room",
     val userName: String,
-    val platform: Platform
+    val platform: Platform,
+    val currentTime: Double = 0.0
 )
 
 @Serializable

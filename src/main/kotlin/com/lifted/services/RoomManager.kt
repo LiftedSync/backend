@@ -14,13 +14,14 @@ object RoomManager {
     private const val ROOM_CODE_LENGTH = 4
     private val ROOM_CODE_CHARS = ('A'..'Z')
 
-    fun createRoom(hostId: String, hostName: String, platform: Platform, session: WebSocketSession): Room {
+    fun createRoom(hostId: String, hostName: String, platform: Platform, session: WebSocketSession, currentTime: Double = 0.0): Room {
         val roomId = generateRoomId()
         val host = User(hostId, hostName, session)
         val room = Room(
             id = roomId,
             platform = platform,
-            hostId = hostId
+            hostId = hostId,
+            currentTime = currentTime
         )
         room.users[hostId] = host
         rooms[roomId] = room

@@ -10,6 +10,6 @@ fun Route.statusRoutes() {
     }
 
     get("/version") {
-        call.respondText("0.2.0", ContentType.Text.Plain)
+        call.respondText("0.8.0", ContentType.Text.Plain)
     }
 }
