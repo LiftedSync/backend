@@ -254,4 +254,64 @@ class RoomRoutesTest {
             hostJob.join()
         }
     }
+
+    @Test
+    fun `navigate resets room time to zero`() = websocketTest { client ->
+        val roomIdDeferred = CompletableDeferred<String>()
+        val navigated = CompletableDeferred<Unit>()
+
+        coroutineScope {
+            // Host creates room with non-zero time, then navigates
+            val hostJob = launch {
+                client.webSocket("/ws") {
+                    send(Frame.Text("""{"type":"create_room","userName":"Host","platform":"youtube","currentTime":120.0}"""))
+                    val frame1 = incoming.receive() as Frame.Text
+                    val created = wsJson.decodeFromString<RoomCreatedMessage>(frame1.readText())
+                    roomIdDeferred.complete(created.roomId)
+                    incoming.receive() // room_joined
+
+                    // Wait for guest to join
+                    incoming.receive() // user_joined
+
+                    // Navigate to a new video
+                    send(Frame.Text("""{"type":"navigate","url":"https://youtube.com/watch?v=new"}"""))
+                    // Host receives navigate_update then sync_update (reset)
+                    incoming.receive() // navigate_update
+                    incoming.receive() // sync_update
+                    navigated.complete(Unit)
+
+                    // Stay connected for guest to rejoin
+                    incoming.receive() // user_left (guest disconnects)
+                    incoming.receive() // user_joined (guest rejoins)
+                    delay(100)
+                }
+            }
+
+            // Guest joins, waits for navigate, then rejoins to check room state
+            val guestJob = launch {
+                val roomId = roomIdDeferred.await()
+                // First connection — join the room
+                client.webSocket("/ws") {
+                    send(Frame.Text("""{"type":"join_room","roomId":"$roomId","userName":"Guest"}"""))
+                    incoming.receive() // room_joined
+                    // Wait for navigate
+                    navigated.await()
+                    // Disconnect
+                }
+
+                // Second connection — rejoin and verify time was reset
+                client.webSocket("/ws") {
+                    send(Frame.Text("""{"type":"join_room","roomId":"$roomId","userName":"Guest"}"""))
+                    val frame = incoming.receive() as Frame.Text
+                    val joined = wsJson.decodeFromString<RoomJoinedMessage>(frame.readText())
+
+                    assertEquals(0.0, joined.currentTime)
+                    assertEquals(VideoState.PAUSED, joined.state)
+                }
+            }
+
+            hostJob.join()
+            guestJob.join()
+        }
+    }
 }

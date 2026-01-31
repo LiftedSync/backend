@@ -2,6 +2,7 @@ package com.lifted.routes
 
 import com.lifted.dto.*
 import com.lifted.models.Platform
+import com.lifted.models.VideoState
 import com.lifted.plugins.wsJson
 import com.lifted.services.RoomManager
 import io.ktor.server.routing.*
@@ -143,12 +144,20 @@ private suspend fun handleNavigate(userId: String, message: NavigateMessage, ses
         return
     }
 
-    // Broadcast to ALL users in the room (including the sender)
     val navigateMessage = NavigateUpdateMessage(
         url = message.url,
         fromUserId = userId
     )
     broadcastToRoom(room.id, wsJson.encodeToString(navigateMessage))
+
+    // Reset room time for the new video
+    RoomManager.updateRoomState(room.id, VideoState.PAUSED, 0.0)
+    val syncReset = SyncUpdateMessage(
+        state = VideoState.PAUSED,
+        currentTime = 0.0,
+        fromUserId = userId
+    )
+    broadcastToRoom(room.id, wsJson.encodeToString(syncReset))
 }
 
 private suspend fun handleLeaveRoom(userId: String) {
