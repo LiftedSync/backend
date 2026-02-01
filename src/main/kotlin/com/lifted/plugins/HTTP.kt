@@ -18,9 +18,9 @@ fun Application.configureHTTP() {
         if (isDevelopment) {
             anyHost()
         } else {
-            //Currently allow any Chrome extension to connect.
+            //Currently allow any Chrome or Firefox extension to connect.
             allowOrigins { origin ->
-                origin.startsWith("chrome-extension://")
+                origin.startsWith("chrome-extension://") || origin.startsWith("moz-extension://")
             }
         }
     }
