@@ -4,6 +4,7 @@ import com.lifted.module
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.server.config.*
 import io.ktor.server.testing.*
 import kotlin.test.*
 
@@ -23,6 +24,9 @@ class StatusRoutesTest {
 
     @Test
     fun `version endpoint returns version`() = testApplication {
+        environment {
+            config = MapApplicationConfig("app.version" to "1.2.3")
+        }
         application {
             module()
         }
@@ -30,6 +34,6 @@ class StatusRoutesTest {
         val response = client.get("/version")
 
         assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals("0.8.0", response.bodyAsText())
+        assertEquals("1.2.3", response.bodyAsText())
     }
 }

@@ -10,6 +10,7 @@ fun Route.statusRoutes() {
     }
 
     get("/version") {
-        call.respondText("0.8.0", ContentType.Text.Plain)
+        val version = application.environment.config.propertyOrNull("app.version")?.getString() ?: "unknown"
+        call.respondText(version, ContentType.Text.Plain)
     }
 }

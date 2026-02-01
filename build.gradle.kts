@@ -9,10 +9,16 @@ repositories {
 }
 
 group = "com.lifted"
-version = "0.8.0"
+version = property("app.version") as String
 
 application {
     mainClass = "io.ktor.server.netty.EngineMain"
+}
+
+tasks.named<ProcessResources>("processResources") {
+    filesMatching("application.yaml") {
+        expand("appVersion" to project.version)
+    }
 }
 
 dependencies {
