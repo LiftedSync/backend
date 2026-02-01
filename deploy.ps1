@@ -15,6 +15,7 @@ ssh $SERVER "cd $REMOTE_PATH && docker compose down || true"
 Write-Host "`n[2/4] Cleaning remote folder..." -ForegroundColor Yellow
 ssh $SERVER "rm -rf $REMOTE_PATH"
 ssh $SERVER "mkdir -p $REMOTE_PATH"
+ssh $SERVER "cp /opt/sync-backend.env $REMOTE_PATH/.env"
 
 # Step 3: Upload files (excluding build, .gradle, .idea, etc.)
 Write-Host "`n[3/4] Uploading files..." -ForegroundColor Yellow

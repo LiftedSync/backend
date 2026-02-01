@@ -62,6 +62,10 @@ object RoomManager {
         }
     }
 
+    fun getRoomCount(): Int = rooms.size
+
+    fun getAllRooms(): List<Room> = rooms.values.toList()
+
     fun getUsersInRoom(roomId: String): List<User> {
         return rooms[roomId]?.users?.values?.toList() ?: emptyList()
     }

@@ -5,6 +5,9 @@ services:
       dockerfile: Dockerfile
     container_name: liftedsync-backend
     restart: unless-stopped
+    environment:
+      - ADMIN_USERNAME=${ADMIN_USERNAME}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
     expose:
       - "8080"
     deploy:

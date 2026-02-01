@@ -10,11 +10,5 @@
     </root>
 
     <!-- LiftedSync application logging -->
-    <logger name="RoomRoutes" level="DEBUG"/>
     <logger name="com.lifted" level="DEBUG"/>
-
-    <!-- Framework logging -->
-    <logger name="org.eclipse.jetty" level="INFO"/>
-    <logger name="io.netty" level="INFO"/>
-    <logger name="io.ktor" level="INFO"/>
 </configuration>

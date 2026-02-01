@@ -5,6 +5,9 @@ ktor:
     deployment:
         port: 8080
     development: true  # Set to false in production
+    admin:
+        username: "admin" # only used for 'development: false'
+        password: "admin"
 
 app:
     version: ${appVersion}
