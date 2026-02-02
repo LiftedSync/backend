@@ -21,10 +21,12 @@ This backend manages real-time synchronization between multiple users watching t
 src/main/kotlin/com/lifted/
 ├── Application.kt          # Entry point, module configuration
 ├── plugins/
+│   ├── Auth.kt             # Admin authentication setup
 │   ├── HTTP.kt             # CORS configuration
 │   ├── Sockets.kt          # WebSocket configuration
 │   └── Serialization.kt    # JSON serialization setup
 ├── routes/
+│   ├── AdminRoutes.kt      # Admin endpoint handlers
 │   ├── StatusRoutes.kt     # Health and version endpoints
 │   └── RoomRoutes.kt       # WebSocket endpoint handlers
 ├── models/
@@ -42,6 +44,7 @@ src/test/kotlin/com/lifted/
 ├── dto/
 │   └── MessageParserTest.kt # Unit tests for message parsing
 └── routes/
+    ├── AdminRoutesTest.kt  # Integration tests for admin endpoints
     ├── StatusRoutesTest.kt # Integration tests for HTTP endpoints
     └── RoomRoutesTest.kt   # Integration tests for WebSocket
 ```
@@ -59,7 +62,7 @@ src/test/kotlin/com/lifted/
 
 ```bash
 # Build a fat JAR with all dependencies
-./gradlew shadowJar
+./gradlew buildFatJar
 
 # Run the production JAR
 java -jar build/libs/sync-backend-all.jar
@@ -163,5 +166,5 @@ Send video update:
 |-----------------------|----------------------------------------|
 | `./gradlew run`       | Run the server                         |
 | `./gradlew build`     | Build everything                       |
-| `./gradlew shadowJar` | Build executable JAR with dependencies |
+| `./gradlew buildFatJar` | Build executable JAR with dependencies |
 | `./gradlew test`      | Run tests                              |

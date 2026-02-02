@@ -6,7 +6,7 @@ ktor:
         port: 8080
     development: true  # Set to false in production
     admin:
-        username: "admin" # only used for 'development: false'
+        username: "admin" # only used for 'development: true'
         password: "admin"
 
 app:
