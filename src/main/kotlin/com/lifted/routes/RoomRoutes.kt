@@ -12,7 +12,7 @@ import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import org.slf4j.LoggerFactory
 import java.util.*
 
-private val logger = LoggerFactory.getLogger("RoomRoutes")
+private val logger = LoggerFactory.getLogger("com.lifted.routes.RoomRoutes")
 
 fun Route.roomRoutes() {
     webSocket("/ws") {
