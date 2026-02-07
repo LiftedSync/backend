@@ -1,4 +1,4 @@
-61114-52681.pph-server.de, liftedgang.de, liftedgang.com {
+liftedgang.de, liftedgang.com {
     handle_path /api/* {
         reverse_proxy backend:8080
     }
@@ -9,6 +9,18 @@
         file_server
     }
 
+    encode gzip
+
+    log {
+        output stdout
+        format console
+    }
+}
+
+berndtbau.com, 61114-52681.pph-server.de {
+    root * /opt/berndtbau/dist
+    try_files {path} /index.html
+    file_server
     encode gzip
 
     log {

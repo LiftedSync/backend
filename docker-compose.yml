@@ -29,6 +29,7 @@ services:
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - /opt/page/dist:/opt/page/dist:ro
+      - /opt/berndtbau/dist:/opt/berndtbau/dist:ro
       - caddy_data:/data
       - caddy_config:/config
     networks:
