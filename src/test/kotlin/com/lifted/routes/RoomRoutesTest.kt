@@ -1,6 +1,6 @@
 package com.lifted.routes
 
-import com.lifted.dto.*
+import com.lifted.messages.*
 import com.lifted.models.Platform
 import com.lifted.models.VideoState
 import com.lifted.module

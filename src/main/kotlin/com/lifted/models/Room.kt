@@ -1,7 +1,6 @@
 package com.lifted.models
 
-import com.lifted.dto.RoomDto
-import com.lifted.dto.UserDto
+import kotlinx.serialization.Serializable
 import java.util.concurrent.ConcurrentHashMap
 
 data class Room(
@@ -13,11 +12,21 @@ data class Room(
     var currentTime: Double = 0.0
 )
 
+@Serializable
+data class RoomDto(
+    val id: String,
+    val platform: Platform,
+    val hostId: String,
+    val currentState: VideoState,
+    val currentTime: Double,
+    val users: List<UserDto>
+)
+
 fun Room.toDto() = RoomDto(
     id = id,
     platform = platform,
     hostId = hostId,
     currentState = currentState,
     currentTime = currentTime,
-    users = users.values.map { UserDto(it.id, it.name) }
+    users = users.values.map {it.toDto() }
 )

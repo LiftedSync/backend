@@ -1,11 +1,11 @@
 package com.lifted.routes
 
-import com.lifted.dto.RoomCountResponse
 import com.lifted.models.toDto
 import com.lifted.services.RoomManager
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.Serializable
 import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("com.lifted.routes.AdminRoutes")
@@ -26,3 +26,8 @@ fun Route.adminRoutes() {
         }
     }
 }
+
+@Serializable
+data class RoomCountResponse(
+    val count: Int
+)

@@ -1,8 +1,7 @@
 package com.lifted.routes
 
-import com.lifted.dto.RoomCountResponse
-import com.lifted.dto.RoomDto
 import com.lifted.models.Platform
+import com.lifted.models.RoomDto
 import com.lifted.models.VideoState
 import com.lifted.module
 import com.lifted.services.RoomManager

@@ -1,4 +1,4 @@
-package com.lifted.dto
+package com.lifted.messages
 
 import com.lifted.models.Platform
 import com.lifted.models.VideoState

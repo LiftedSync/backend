@@ -1,8 +1,9 @@
 package com.lifted.routes
 
-import com.lifted.dto.*
+import com.lifted.messages.*
 import com.lifted.models.Platform
 import com.lifted.models.VideoState
+import com.lifted.models.toDto
 import com.lifted.plugins.wsJson
 import com.lifted.services.RoomManager
 import io.ktor.server.routing.*
@@ -70,7 +71,7 @@ private suspend fun handleCreateRoom(
         platform = room.platform,
         state = room.currentState,
         currentTime = room.currentTime,
-        users = room.users.values.map { UserInfo(it.id, it.name) }
+        users = room.users.values.map { it.toDto() }
     )
     session.send(Frame.Text(wsJson.encodeToString(joinedResponse)))
 }
@@ -97,7 +98,7 @@ private suspend fun handleJoinRoom(
         platform = room.platform,
         state = room.currentState,
         currentTime = room.currentTime,
-        users = room.users.values.map { UserInfo(it.id, it.name) }
+        users = room.users.values.map { it.toDto() }
     )
     session.send(Frame.Text(wsJson.encodeToString(joinedResponse)))
 
@@ -105,7 +106,7 @@ private suspend fun handleJoinRoom(
     val userJoinedMessage = UserJoinedMessage(
         userName = message.userName,
         userCount = room.users.size,
-        users = room.users.values.map { UserInfo(it.id, it.name) }
+        users = room.users.values.map { it.toDto() }
     )
     broadcastToRoom(room.id, wsJson.encodeToString(userJoinedMessage), excludeUserId = userId)
 }
@@ -173,7 +174,7 @@ private suspend fun handleDisconnect(userId: String) {
         val leftMessage = UserLeftMessage(
             userName = user.name,
             userCount = room.users.size,
-            users = room.users.values.map { UserInfo(it.id, it.name) }
+            users = room.users.values.map { it.toDto() }
         )
         broadcastToRoom(room.id, wsJson.encodeToString(leftMessage))
     }

@@ -1,6 +1,7 @@
-package com.lifted.dto
+package com.lifted.messages
 
 import com.lifted.models.Platform
+import com.lifted.models.UserDto
 import com.lifted.models.VideoState
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -57,13 +58,7 @@ data class RoomJoinedMessage(
     val platform: Platform,
     val state: VideoState,
     val currentTime: Double,
-    val users: List<UserInfo>
-)
-
-@Serializable
-data class UserInfo(
-    val id: String,
-    val name: String
+    val users: List<UserDto>
 )
 
 @Serializable
@@ -85,7 +80,7 @@ data class UserJoinedMessage(
     val type: String = "user_joined",
     val userName: String,
     val userCount: Int,
-    val users: List<UserInfo>
+    val users: List<UserDto>
 )
 
 @Serializable
@@ -93,7 +88,7 @@ data class UserLeftMessage(
     val type: String = "user_left",
     val userName: String,
     val userCount: Int,
-    val users: List<UserInfo>
+    val users: List<UserDto>
 )
 
 @Serializable
