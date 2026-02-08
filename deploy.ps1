@@ -1,25 +1,25 @@
 # Deploy script for sync-backend
 
 $SERVER = "root@61114-52681.pph-server.de"
+$PORT = "54321"
 $REMOTE_PATH = "/opt/sync-backend"
 $LOCAL_PATH = $PSScriptRoot
 
-Write-Host "Deploying sync-backend to $SERVER..." -ForegroundColor Cyan
+Write-Host "Deploying sync-backend to $SERVER on port $PORT..." -ForegroundColor Cyan
 
 # Step 1: Stop containers on server
-# "|| true" ensures script continues even if containers aren't running or folder is missing
 Write-Host "`n[1/4] Stopping containers..." -ForegroundColor Yellow
-ssh $SERVER "cd $REMOTE_PATH && docker compose down || true"
+ssh -p $PORT $SERVER "cd $REMOTE_PATH && docker compose down || true"
 
 # Step 2: Clean remote folder
 Write-Host "`n[2/4] Cleaning remote folder..." -ForegroundColor Yellow
-ssh $SERVER "rm -rf $REMOTE_PATH"
-ssh $SERVER "mkdir -p $REMOTE_PATH"
-ssh $SERVER "cp /opt/sync-backend.env $REMOTE_PATH/.env"
+ssh -p $PORT $SERVER "rm -rf $REMOTE_PATH"
+ssh -p $PORT $SERVER "mkdir -p $REMOTE_PATH"
+ssh -p $PORT $SERVER "cp /opt/sync-backend.env $REMOTE_PATH/.env"
 
-# Step 3: Upload files (excluding build, .gradle, .idea, etc.)
+# Step 3: Upload files
 Write-Host "`n[3/4] Uploading files..." -ForegroundColor Yellow
-scp -r `
+scp -P $PORT -r `
     "$LOCAL_PATH\src" `
     "$LOCAL_PATH\gradle" `
     "$LOCAL_PATH\build.gradle.kts" `
@@ -34,10 +34,10 @@ scp -r `
 
 # Step 4: Build and start containers
 Write-Host "`n[4/4] Building and starting containers..." -ForegroundColor Yellow
-ssh $SERVER "cd $REMOTE_PATH && docker compose up -d --build"
+ssh -p $PORT $SERVER "cd $REMOTE_PATH && docker compose up -d --build"
 
 Write-Host "`nDeployment complete!" -ForegroundColor Green
 
-# Show logs (Script blocks here. Press Ctrl+C to exit)
+# Show logs
 Write-Host "Streaming logs... (Press Ctrl+C to exit)" -ForegroundColor Gray
-ssh $SERVER "cd $REMOTE_PATH && docker compose logs -f"
+ssh -p $PORT $SERVER "cd $REMOTE_PATH && docker compose logs -f"
