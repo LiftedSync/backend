@@ -62,7 +62,7 @@ src/test/kotlin/com/lifted/
 
 ```bash
 # Build a fat JAR with all dependencies
-./gradlew buildFatJar
+./gradlew clean buildFatJar
 
 # Run the production JAR
 java -jar build/libs/sync-backend-all.jar
@@ -72,6 +72,20 @@ PORT=9090 java -jar build/libs/sync-backend-all.jar
 ```
 
 ## Deployment
+
+The backend is built locally and deployed as a pre-built JAR to the server via `deploy.ps1`. This avoids compiling on the resource-constrained server (1GB RAM, 1 CPU).
+
+```powershell
+# Deploy from the backend directory
+.\deploy.ps1
+```
+
+The script does the following:
+1. Builds the fat JAR locally (`clean buildFatJar`)
+2. Stops running containers on the server
+3. Cleans the remote folder and restores `.env`
+4. Uploads `app.jar`, `Dockerfile`, `Caddyfile`, `docker-compose.yml`
+5. Runs `docker compose up -d --build` on the server
 
 ### Server Details
 
@@ -92,8 +106,14 @@ docker compose down
 # Restart services
 docker compose restart
 
-# Rebuild and start
-docker compose up -d --build
+# Stop a specific container
+docker stop <container-name>
+
+# Remove all unused images, containers, networks and build cache
+docker system prune -a
+
+# Show resource usage of running containers (CPU, memory, etc.)
+docker stats --no-stream
 ```
 
 ### Logs
