@@ -5,7 +5,7 @@ $PORT = "54321"
 $REMOTE_PATH = "/opt/sync-backend"
 $LOCAL_PATH = $PSScriptRoot
 
-Write-Host "Deploying sync-backend to $SERVER on port $PORT..." -ForegroundColor Cyan
+Write-Host "Deploying sync-backend to $SERVER" -ForegroundColor Cyan
 
 # Step 1: Stop containers on server
 Write-Host "`n[1/4] Stopping containers..." -ForegroundColor Yellow

@@ -33,7 +33,7 @@ src/main/kotlin/com/lifted/
 │   ├── Enums.kt            # Platform, VideoState enums
 │   ├── Room.kt             # Room data class
 │   └── User.kt             # User data class
-├── dto/
+├── messages/
 │   └── Messages.kt         # WebSocket message DTOs
 └── services/
     └── RoomManager.kt      # In-memory room management
@@ -41,7 +41,7 @@ src/main/kotlin/com/lifted/
 src/test/kotlin/com/lifted/
 ├── services/
 │   └── RoomManagerTest.kt  # Unit tests for room management
-├── dto/
+├── messages/
 │   └── MessageParserTest.kt # Unit tests for message parsing
 └── routes/
     ├── AdminRoutesTest.kt  # Integration tests for admin endpoints
