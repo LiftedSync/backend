@@ -1,0 +1,30 @@
+liftedgang.de, www.liftedgang.de, liftedgang.com, www.liftedgang.com {
+    handle_path /api/* {
+        reverse_proxy backend:8080
+    }
+
+    handle {
+        root * /opt/page/dist
+        try_files {path} /index.html
+        file_server
+    }
+
+    encode gzip
+
+    log {
+        output stdout
+        format console
+    }
+}
+
+berndtbau.com, www.berndtbau.com, 61114-52681.pph-server.de {
+    root * /opt/berndtbau/dist
+    try_files {path} /index.html
+    file_server
+    encode gzip
+
+    log {
+        output stdout
+        format console
+    }
+}
